@@ -41,4 +41,9 @@ public class NovaPropostaRequest {
 	public Proposta converterParaProposta() {
 		return new Proposta(documento, email, nome, endereco, salario);
 	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
 }
