@@ -2,7 +2,10 @@ package br.com.zupacademy.guzzo.proposta.novaproposta;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,11 +21,15 @@ public class Proposta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(unique = true)
 	private @NotBlank String documento;
 	private @Email @NotBlank String email;
 	private @NotBlank String nome;
 	private @NotBlank String endereco;
 	private @NotNull @PositiveOrZero BigDecimal salario;
+
+	@Enumerated(EnumType.STRING)
+	private StatusProposta status;
 
 	@Deprecated
 	public Proposta() {
@@ -60,6 +67,14 @@ public class Proposta {
 
 	public BigDecimal getSalario() {
 		return salario;
+	}
+
+	public StatusProposta getStatus() {
+		return status;
+	}
+
+	public void adicionaStatus(StatusProposta status) {
+		this.status = status;
 	}
 
 }

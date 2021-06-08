@@ -2,9 +2,6 @@ package br.com.zupacademy.guzzo.proposta.novaproposta;
 
 import java.net.URI;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.zupacademy.guzzo.proposta.novaproposta.solicitacaoanaliseexterno.SolicitacaoAnaliseExternoFeign;
+import br.com.zupacademy.guzzo.proposta.novaproposta.solicitacaoanaliseexterno.SolicitacaoAnaliseRequest;
+import feign.FeignException;
+
 @RestController
 public class NovaPropostaController {
 
-	@PersistenceContext
-	private EntityManager entityManager;
+	@Autowired
+	private PropostaRepository propostaRepository;
 
 	@Autowired
 	private ProibeMaisDeUmaPropostaParaMesmoDocumentoValidator proibeMaisDeUmaPropostaParaMesmoDocumentoValidator;
 
+	@Autowired
+	private SolicitacaoAnaliseExternoFeign analiseExterna;
+
 	@PostMapping("/propostas")
-	@Transactional
 	public ResponseEntity<?> cadastrarNovaProposta(@RequestBody @Valid NovaPropostaRequest request,
 			UriComponentsBuilder builder) {
 
@@ -36,7 +39,17 @@ public class NovaPropostaController {
 		}
 
 		Proposta proposta = request.converterParaProposta();
-		entityManager.persist(proposta);
+		propostaRepository.save(proposta);
+
+		try {
+			analiseExterna.solicitaAnalise(new SolicitacaoAnaliseRequest(proposta));
+			proposta.adicionaStatus(StatusProposta.ELEGIVEL);
+
+		} catch (FeignException e) {
+			proposta.adicionaStatus(StatusProposta.NAO_ELEGIVEL);
+		}
+
+		propostaRepository.save(proposta);
 
 		URI enderecoConsulta = builder.path("/propostas/{id}").build(proposta.getId());
 
