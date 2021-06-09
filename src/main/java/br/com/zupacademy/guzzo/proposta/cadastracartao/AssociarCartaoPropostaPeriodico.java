@@ -17,7 +17,7 @@ import br.com.zupacademy.guzzo.proposta.novaproposta.StatusProposta;
 import feign.FeignException;
 
 @Component
-public class AssociarCartaoProposta {
+public class AssociarCartaoPropostaPeriodico {
 
 	@Autowired
 	private PropostaRepository propostaRepository;
@@ -25,7 +25,7 @@ public class AssociarCartaoProposta {
 	@Autowired
 	private CartaoResourseFeign cartaoResourseFeign;
 
-	private final Logger logger = LoggerFactory.getLogger(AssociarCartaoProposta.class);
+	private final Logger logger = LoggerFactory.getLogger(AssociarCartaoPropostaPeriodico.class);
 
 	@Scheduled(fixedDelayString = "${periodicidade.associa-cartao-proposta}")
 	private void associar() {
