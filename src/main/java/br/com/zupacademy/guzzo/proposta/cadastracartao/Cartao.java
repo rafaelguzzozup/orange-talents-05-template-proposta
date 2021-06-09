@@ -2,14 +2,18 @@ package br.com.zupacademy.guzzo.proposta.cadastracartao;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import br.com.zupacademy.guzzo.proposta.cadastrabiometria.Biometria;
 import br.com.zupacademy.guzzo.proposta.novaproposta.Proposta;
 
 @Entity
@@ -28,6 +32,9 @@ public class Cartao {
 
 	@OneToOne(mappedBy = "cartao")
 	private Proposta proposta;
+
+	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+	private List<Biometria> biometrias = new ArrayList<>();
 
 	@Deprecated
 	public Cartao() {
@@ -82,6 +89,10 @@ public class Cartao {
 
 	public void setVencimento(Vencimento vencimento) {
 		this.vencimento = vencimento;
+	}
+
+	public List<Biometria> getBiometrias() {
+		return biometrias;
 	}
 
 }
