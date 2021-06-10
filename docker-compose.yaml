@@ -140,7 +140,7 @@ services:
       dockerfile: Dockerfile
       context: .
     ports:
-      - 8080:8080
+      - 5555:8080
     environment:
       HOST_URL: "host.docker.internal"
 
