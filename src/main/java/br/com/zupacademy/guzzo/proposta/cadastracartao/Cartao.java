@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import br.com.zupacademy.guzzo.proposta.bloqueiacartao.Bloqueio;
 import br.com.zupacademy.guzzo.proposta.cadastrabiometria.Biometria;
 import br.com.zupacademy.guzzo.proposta.novaproposta.Proposta;
 
@@ -33,8 +34,12 @@ public class Cartao {
 	@OneToOne(mappedBy = "cartao")
 	private Proposta proposta;
 
-	@OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
 	private List<Biometria> biometrias = new ArrayList<>();
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "bloqueio_id")
+	private Bloqueio bloqueio;
 
 	@Deprecated
 	public Cartao() {
@@ -101,5 +106,17 @@ public class Cartao {
 
 	public Biometria getUltimaBiometria() {
 		return this.biometrias.get(this.biometrias.size() - 1);
+	}
+
+	public Bloqueio getBloqueio() {
+		return bloqueio;
+	}
+
+	public void adicionaBloqueio(Bloqueio bloqueio) {
+		this.bloqueio = bloqueio;
+	}
+
+	public boolean cartaoBloqueado() {
+		return this.bloqueio != null;
 	}
 }
