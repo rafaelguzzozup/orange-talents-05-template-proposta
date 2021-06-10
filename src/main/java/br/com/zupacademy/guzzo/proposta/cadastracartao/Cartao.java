@@ -95,4 +95,11 @@ public class Cartao {
 		return biometrias;
 	}
 
+	public void adicionaBiometria(Biometria biometria) {
+		this.biometrias.add(biometria);
+	}
+
+	public Biometria getUltimaBiometria() {
+		return this.biometrias.get(this.biometrias.size() - 1);
+	}
 }

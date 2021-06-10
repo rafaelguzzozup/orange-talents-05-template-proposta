@@ -2,9 +2,6 @@ package br.com.zupacademy.guzzo.proposta.cadastrabiometria;
 
 import java.net.URI;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zupacademy.guzzo.proposta.cadastracartao.Cartao;
+import br.com.zupacademy.guzzo.proposta.cadastracartao.CartaoRepository;
 
 @RestController
 public class CadastrarBiometriaController {
 
-	@PersistenceContext
-	private EntityManager entityManager;
-
 	@Autowired
 	private ValidaFingerprintBase64Biometria validaFingerprintBase64Biometria;
+
+	@Autowired
+	private CartaoRepository cartaoRepository;
 
 	@InitBinder
 	public void init(WebDataBinder binder) {
@@ -34,22 +32,20 @@ public class CadastrarBiometriaController {
 	}
 
 	@PostMapping("/cartoes/{id}/biometria")
-	@Transactional
 	public ResponseEntity<?> cadastra(@PathVariable String id, @RequestBody @Valid CadastroBiometriaRequest request,
 			UriComponentsBuilder builder) {
 
-		Cartao cartao = entityManager.find(Cartao.class, id);
+		Cartao cartao = cartaoRepository.findById(id).get();
 
 		if (cartao == null) {
 			return ResponseEntity.notFound().build();
 		}
 
-		Biometria biometria = request.converterParaBiometria(cartao);
-
-		entityManager.persist(biometria);
+		cartao.adicionaBiometria(request.converterParaBiometria(cartao));
+		cartaoRepository.save(cartao);
 
 		URI enderecoConsulta = builder.path("/cartoes/{id}/biometria/{idBiometria}").build(cartao.getId(),
-				biometria.getId());
+				cartao.getUltimaBiometria().getId());
 
 		return ResponseEntity.created(enderecoConsulta).build();
 	}
