@@ -35,6 +35,7 @@ public class BloqueiaCartaoController {
 		Bloqueio bloqueio = new Bloqueio(request.getRemoteAddr(), request.getHeader("User-Agent"), cartao);
 
 		cartao.adicionaBloqueio(bloqueio);
+
 		entityManager.persist(cartao);
 
 		return ResponseEntity.ok().build();

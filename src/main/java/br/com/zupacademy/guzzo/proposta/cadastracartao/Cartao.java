@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -15,6 +17,7 @@ import javax.persistence.OneToOne;
 
 import br.com.zupacademy.guzzo.proposta.bloqueiacartao.Bloqueio;
 import br.com.zupacademy.guzzo.proposta.cadastrabiometria.Biometria;
+import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.StatusCartao;
 import br.com.zupacademy.guzzo.proposta.novaproposta.Proposta;
 
 @Entity
@@ -40,6 +43,9 @@ public class Cartao {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "bloqueio_id")
 	private Bloqueio bloqueio;
+
+	@Enumerated(EnumType.STRING)
+	private StatusCartao status;
 
 	@Deprecated
 	public Cartao() {
@@ -118,5 +124,13 @@ public class Cartao {
 
 	public boolean cartaoBloqueado() {
 		return this.bloqueio != null;
+	}
+
+	public void adicionarStatus(StatusCartao status) {
+		this.status = status;
+	}
+
+	public StatusCartao getStatus() {
+		return status;
 	}
 }
