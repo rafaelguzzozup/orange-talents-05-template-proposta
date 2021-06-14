@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.zupacademy.guzzo.proposta.metricas.MetricasPropostas;
 import br.com.zupacademy.guzzo.proposta.novaproposta.solicitacaoanaliseexterno.SolicitacaoAnaliseExternoFeign;
 import br.com.zupacademy.guzzo.proposta.novaproposta.solicitacaoanaliseexterno.SolicitacaoAnaliseRequest;
 import feign.FeignException;
 
 @RestController
 public class NovaPropostaController {
+
+	@Autowired
+	private MetricasPropostas metricasPropostas;
 
 	@Autowired
 	private PropostaRepository propostaRepository;
@@ -44,9 +48,11 @@ public class NovaPropostaController {
 		try {
 			analiseExterna.solicitaAnalise(new SolicitacaoAnaliseRequest(proposta));
 			proposta.adicionaStatus(StatusProposta.ELEGIVEL);
+			metricasPropostas.contadorPropostaElegivel();
 
 		} catch (FeignException e) {
 			proposta.adicionaStatus(StatusProposta.NAO_ELEGIVEL);
+			metricasPropostas.contadorPropostaNaoElegivel();
 		}
 
 		propostaRepository.save(proposta);
