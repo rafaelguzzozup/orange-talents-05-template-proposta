@@ -1,4 +1,4 @@
-package br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno;
+package br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao;
 
 import br.com.zupacademy.guzzo.proposta.novaproposta.Proposta;
 

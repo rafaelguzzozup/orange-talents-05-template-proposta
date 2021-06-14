@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.CartaoResourseFeign;
-import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.PropostaCartaoRequest;
-import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.RetornoCartaoResourceDto;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.CartaoResourseFeign;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.PropostaCartaoRequest;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.RetornoCartaoResourceDto;
 import br.com.zupacademy.guzzo.proposta.novaproposta.Proposta;
 import br.com.zupacademy.guzzo.proposta.novaproposta.PropostaRepository;
 import br.com.zupacademy.guzzo.proposta.novaproposta.StatusProposta;

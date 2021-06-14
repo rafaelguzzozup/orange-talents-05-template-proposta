@@ -18,7 +18,7 @@ import javax.persistence.OneToOne;
 import br.com.zupacademy.guzzo.proposta.avisoviajem.AvisoViagem;
 import br.com.zupacademy.guzzo.proposta.bloqueiacartao.Bloqueio;
 import br.com.zupacademy.guzzo.proposta.cadastrabiometria.Biometria;
-import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.StatusCartao;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.StatusCartao;
 import br.com.zupacademy.guzzo.proposta.novaproposta.Proposta;
 
 @Entity

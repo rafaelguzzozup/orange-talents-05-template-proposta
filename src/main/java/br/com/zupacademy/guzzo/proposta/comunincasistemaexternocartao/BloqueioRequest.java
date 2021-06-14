@@ -1,4 +1,4 @@
-package br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno;
+package br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao;
 
 public class BloqueioRequest {
 	private String sistemaResponsavel;

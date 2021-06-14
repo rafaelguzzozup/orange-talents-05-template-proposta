@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.zupacademy.guzzo.proposta.cadastracartao.Cartao;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.AvisoViagemExternoRequest;
 
 public class AvisoViagemRequest {
 
@@ -19,7 +20,7 @@ public class AvisoViagemRequest {
 
 	@NotNull
 	@Future
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dataTerminoViagem;
 
 	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -32,7 +33,20 @@ public class AvisoViagemRequest {
 	}
 
 	public AvisoViagem converterParaAvisoViagem(HttpServletRequest request, Cartao cartao) {
-		return new AvisoViagem(destino, dataTerminoViagem, request.getRemoteAddr(), request.getHeader("User-Agent"), cartao);
+		return new AvisoViagem(destino, dataTerminoViagem, request.getRemoteAddr(), request.getHeader("User-Agent"),
+				cartao);
+	}
+
+	public AvisoViagemExternoRequest converterParaAvisoViagemExternoRequest() {
+		return new AvisoViagemExternoRequest(destino, dataTerminoViagem);
+	}
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public LocalDate getDataTerminoViagem() {
+		return dataTerminoViagem;
 	}
 
 }

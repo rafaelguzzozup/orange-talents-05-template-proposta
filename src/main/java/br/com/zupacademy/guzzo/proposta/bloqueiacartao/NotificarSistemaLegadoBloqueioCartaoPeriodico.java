@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 import br.com.zupacademy.guzzo.proposta.cadastracartao.Cartao;
 import br.com.zupacademy.guzzo.proposta.cadastracartao.CartaoRepository;
-import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.BloqueioRequest;
-import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.CartaoResourseFeign;
-import br.com.zupacademy.guzzo.proposta.cadastracartao.comunincasistemaexterno.StatusCartao;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.BloqueioRequest;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.CartaoResourseFeign;
+import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.StatusCartao;
 import feign.FeignException;
 
 /*
