@@ -32,7 +32,7 @@ public class NotificarSistemaLegadoBloqueioCartaoPeriodico {
 	private CartaoResourseFeign cartaoResourseFeign;
 
 	@Scheduled(fixedDelayString = "${periodicidade.notifica-bloqueio-cartao}")
-	private void atualizarStatusProposta() {
+	protected void atualizarStatusProposta() {
 
 		List<Cartao> cartoesBloqueadosQueNaoNotificaramSistema = cartaoRepository.findByStatusIsNullAndBloqueioNotNull();
 

@@ -29,7 +29,7 @@ public class AtualizarStatusPropostaPeriodico {
 	private SolicitacaoAnaliseExternoFeign analiseExterna;
 
 	@Scheduled(fixedDelayString = "${periodicidade.atualiza-status-proposta}")
-	private void atualizarStatusProposta() {
+	protected void atualizarStatusProposta() {
 
 		List<Proposta> propostasSemCartao = propostaRepository.findByStatusAndCartaoIsNull(StatusProposta.NAO_ELEGIVEL);
 

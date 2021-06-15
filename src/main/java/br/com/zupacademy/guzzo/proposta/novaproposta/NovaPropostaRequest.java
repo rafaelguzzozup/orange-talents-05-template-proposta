@@ -46,4 +46,8 @@ public class NovaPropostaRequest {
 		return documento;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
 }

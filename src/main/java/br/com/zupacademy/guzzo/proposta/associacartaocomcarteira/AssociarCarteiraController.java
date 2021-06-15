@@ -19,6 +19,8 @@ import br.com.zupacademy.guzzo.proposta.cadastracartao.Cartao;
 import br.com.zupacademy.guzzo.proposta.cadastracartao.CartaoRepository;
 import br.com.zupacademy.guzzo.proposta.comunincasistemaexternocartao.CartaoResourseFeign;
 import feign.FeignException;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 public class AssociarCarteiraController {
@@ -30,13 +32,21 @@ public class AssociarCarteiraController {
 	private CartaoRepository cartaoRepository;
 	
 	private final Logger logger = LoggerFactory.getLogger(AssociarCarteiraController.class);
+	
+	private final Tracer tracer;
+	
+	public AssociarCarteiraController(Tracer tracer) {
+		this.tracer = tracer;
+	}
 
 	@PostMapping("/cartoes/{id}/carteiras")
 	public ResponseEntity<?> associaCartaoComCarteira(@PathVariable String id,
 			@RequestBody @Valid CarteiraRequest carteiraRequest, UriComponentsBuilder uriComponentsBuilder) {
-
 		Optional<Cartao> possivelCartao = cartaoRepository.findById(id);
-
+		
+		Span spanAtivo = tracer.activeSpan();
+		spanAtivo.setBaggageItem("associar-cartao-carteira.email",carteiraRequest.getEmail());
+		
 		if (possivelCartao.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

@@ -17,6 +17,8 @@ import br.com.zupacademy.guzzo.proposta.metricas.MetricasPropostas;
 import br.com.zupacademy.guzzo.proposta.novaproposta.solicitacaoanaliseexterno.SolicitacaoAnaliseExternoFeign;
 import br.com.zupacademy.guzzo.proposta.novaproposta.solicitacaoanaliseexterno.SolicitacaoAnaliseRequest;
 import feign.FeignException;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @RestController
 public class NovaPropostaController {
@@ -33,9 +35,18 @@ public class NovaPropostaController {
 	@Autowired
 	private SolicitacaoAnaliseExternoFeign analiseExterna;
 
+	private final Tracer tracer;
+
+	public NovaPropostaController(Tracer tracer) {
+		this.tracer = tracer;
+	}
+
 	@PostMapping("/propostas")
 	public ResponseEntity<?> cadastrarNovaProposta(@RequestBody @Valid NovaPropostaRequest request,
 			UriComponentsBuilder builder) {
+
+		Span spanAtivo = tracer.activeSpan();
+		spanAtivo.setBaggageItem("novaproposta.email", request.getEmail());
 
 		if (proibeMaisDeUmaPropostaParaMesmoDocumentoValidator.existeProposta(request)) {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,

@@ -15,6 +15,8 @@ import br.com.zupacademy.guzzo.proposta.novaproposta.Proposta;
 import br.com.zupacademy.guzzo.proposta.novaproposta.PropostaRepository;
 import br.com.zupacademy.guzzo.proposta.novaproposta.StatusProposta;
 import feign.FeignException;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 
 @Component
 public class AssociarCartaoPropostaPeriodico {
@@ -26,9 +28,15 @@ public class AssociarCartaoPropostaPeriodico {
 	private CartaoResourseFeign cartaoResourseFeign;
 
 	private final Logger logger = LoggerFactory.getLogger(AssociarCartaoPropostaPeriodico.class);
+	
+	private final Tracer tracer;
+	
+	public AssociarCartaoPropostaPeriodico(Tracer tracer) {
+		this.tracer = tracer;
+	}
 
 	@Scheduled(fixedDelayString = "${periodicidade.associa-cartao-proposta}")
-	private void associar() {
+	protected void associar() {
 
 		List<Proposta> propostasSemCartao = propostaRepository.findByStatusAndCartaoIsNull(StatusProposta.ELEGIVEL);
 
@@ -37,6 +45,9 @@ public class AssociarCartaoPropostaPeriodico {
 		}
 
 		propostasSemCartao.forEach(proposta -> {
+			Span spanAtivo = tracer.activeSpan();
+			spanAtivo.setBaggageItem("associar-cartao-proposta.emal", proposta.getEmail());
+			
 			try {
 
 				RetornoCartaoResourceDto cartaoDto = cartaoResourseFeign
