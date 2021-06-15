@@ -36,7 +36,7 @@ public class AvisoViagemController {
 
 		Optional<Cartao> possivelCartao = cartaoRepository.findById(id);
 
-		if (possivelCartao.isPresent()) {
+		if (possivelCartao.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 

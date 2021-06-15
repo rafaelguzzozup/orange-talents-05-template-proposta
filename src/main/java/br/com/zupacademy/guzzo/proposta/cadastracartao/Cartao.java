@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import br.com.zupacademy.guzzo.proposta.associacartaocomcarteira.CarteiraDigital;
+import br.com.zupacademy.guzzo.proposta.associacartaocomcarteira.TipoCarteira;
 import br.com.zupacademy.guzzo.proposta.avisoviajem.AvisoViagem;
 import br.com.zupacademy.guzzo.proposta.bloqueiacartao.Bloqueio;
 import br.com.zupacademy.guzzo.proposta.cadastrabiometria.Biometria;
@@ -49,7 +51,10 @@ public class Cartao {
 	private StatusCartao status;
 
 	@OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
-	private List<AvisoViagem> avisoViagem = new ArrayList<>();;
+	private List<AvisoViagem> avisoViagem = new ArrayList<>();
+
+	@OneToMany(mappedBy = "cartao", cascade = CascadeType.ALL)
+	private List<CarteiraDigital> carteiras = new ArrayList<>();
 
 	@Deprecated
 	public Cartao() {
@@ -140,5 +145,21 @@ public class Cartao {
 
 	public void adicionaAvisoViagem(AvisoViagem avisoViagem) {
 		this.avisoViagem.add(avisoViagem);
+	}
+
+	public void adicionarCarteira(CarteiraDigital carteiraDigital) {
+		this.carteiras.add(carteiraDigital);
+	}
+
+	public List<CarteiraDigital> getCarteiras() {
+		return carteiras;
+	}
+
+	public CarteiraDigital getUltimaCarteiraAdicionada() {
+		return this.carteiras.get(this.carteiras.size() - 1);
+	}
+
+	public boolean jaExisteCarteiraAssociada(TipoCarteira tipoCarteira) {
+		return this.carteiras.stream().anyMatch(carteira -> carteira.getCarteira().equals(tipoCarteira));
 	}
 }

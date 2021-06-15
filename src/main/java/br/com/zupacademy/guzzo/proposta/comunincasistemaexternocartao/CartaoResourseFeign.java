@@ -16,4 +16,7 @@ public interface CartaoResourseFeign {
 	
 	@PostMapping(value = "/api/cartoes/{id}/avisos")
 	RetornoAvisoViagemExternoDto notificaSistemaAvisoViagem(@PathVariable String id, @RequestBody AvisoViagemExternoRequest request);
+	
+	@PostMapping(value = "/api/cartoes/{id}/carteiras")
+	RetornoVinculoCarteira associaCarteiraExterno(@PathVariable String id, @RequestBody VinculoCarteiraExternoRequest request);
 }
