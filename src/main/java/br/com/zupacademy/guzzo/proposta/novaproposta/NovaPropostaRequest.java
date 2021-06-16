@@ -7,6 +7,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.keygen.KeyGenerators;
+
+import br.com.zupacademy.guzzo.proposta.seguranca.Criptografia;
 import br.com.zupacademy.guzzo.proposta.validator.CPFouCNPJ;
 
 public class NovaPropostaRequest {
@@ -39,7 +43,8 @@ public class NovaPropostaRequest {
 	}
 
 	public Proposta converterParaProposta() {
-		return new Proposta(documento, email, nome, endereco, salario);
+
+		return new Proposta(Criptografia.encrypt(documento), email, nome, endereco, salario);
 	}
 
 	public String getDocumento() {
