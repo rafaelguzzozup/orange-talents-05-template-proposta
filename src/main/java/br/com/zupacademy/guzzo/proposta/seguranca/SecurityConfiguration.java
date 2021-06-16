@@ -10,11 +10,13 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests(authorizeRequests -> authorizeRequests.antMatchers(HttpMethod.GET, "/propostas/**")
-				.hasAuthority("SCOPE_meu-escopo").antMatchers(HttpMethod.POST, "/propostas/**")
-				.hasAuthority("SCOPE_meu-escopo").antMatchers(HttpMethod.GET, "/cartoes/**")
-				.hasAuthority("SCOPE_meu-escopo").antMatchers(HttpMethod.GET, "/cartoes/**")
-				.hasAuthority("SCOPE_meu-escopo").anyRequest().authenticated())
+		http.authorizeRequests(
+				authorizeRequests -> authorizeRequests.antMatchers("/actuator/**")
+						.permitAll().antMatchers(HttpMethod.GET, "/propostas/**").hasAuthority("SCOPE_meu-escopo")
+						.antMatchers(HttpMethod.POST, "/propostas/**").hasAuthority("SCOPE_meu-escopo")
+						.antMatchers(HttpMethod.GET, "/cartoes/**").hasAuthority("SCOPE_meu-escopo")
+						.antMatchers(HttpMethod.GET, "/cartoes/**").hasAuthority("SCOPE_meu-escopo").anyRequest()
+						.authenticated())
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
 	}
